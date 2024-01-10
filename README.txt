@@ -34,8 +34,7 @@ ICOP24 Coding Notes:
 - Regional gradient potential term in the superposition equation - from Strack (2017) and Strack (1989)
 - Numerical solution method for solving Poisson equation for recharge is from Barba and Forsyth (2017)
 - The superposition equation (for complex potential) for an aquifer with two isopotential/equipotential lines was adapted from Holzbecher (2005), with thanks to Nagheli et al. (2020) for the understanding of the powers of the complex numbers (pi/alpha) in the logarithm functions.
-- Ensuring visual continuity of streamlines across a branch cut was performed via the sequential contouring method by Holzbecher (2018). This method was previously coded by Wiebe and McKenzie (2022) - see the ajwiebe77/YWVC respository - and was 
-modified slightly for use here.
+- Ensuring visual continuity of streamlines across a branch cut was performed via the sequential contouring method by Holzbecher (2018). This method was previously coded (Wiebe and McKenzie (2022)) - see the ajwiebe77/YWVC respository - and was modified slightly for use here.
 
 
 Known Limitations:
@@ -43,7 +42,7 @@ Known Limitations:
 - The background regional water table has some issues outside of a radius of 1000 m near the edge of the 1000 m by 1000 m area. This may be adjusted by ghosting in some points along the outer edges. This would also be helpful along the two boundary arms of the aquifer wedge for distances from the origin of > 500 m. A more realistic water table would slope down those lines and then reach an elevation of zero for the 0 to 500 m distance along each boundary line.
 - Future work could attempt to more reasonably follow the lake shoreline and alter the geometry away from a simple wedge. The Nagheli et al. (2020) approach for irregular polygon-shaped aquifers may be useful in association with this (recharge and regional gradient terms would need to be added to their analytical solutions). It might be possible to identify stagnation points and therefore capture zone boundaries if the wider flow field was considered. (Regional flow may branch with some flowing underneath the community and toward the well and some flowing directly into the lake on either side of the peninsula without entering the peninsula wedge).
 - The approach of using an image well fails to create a no-flow/impermeable permafrost boundary in Case (1). This is likely due to the presence of a regional flow field, because Mahdavi (2021), for instance, illustrates that an impermeable boundary can be created for a wedge aquifer using an image well in the absence of a regional gradient.
-- The gradient ascent method (inspired by a gradient descent method; e.g., Khan Academy [2024]) is far from perfect and could be improved. Problems: 1) the method only identifies one point, which may be erroneous and located on or very close to a boundary or edge of the domain; 2) there is no feedback to suggest whether the point is likely erroneous or a good estimate; 3) the step size may not be optimal; and 4) the algorithm could pass through a stagnation point and keep going rather than identifying where best to stop.
+- The gradient ascent method (inspired by a gradient descent method; e.g., Khan Academy [2024]) is far from perfect and could be improved. Problems: 1) the method only identifies one point, which may be erroneous and located on or very close to a boundary or edge of the domain; 2) there is no feedback to suggest whether the point is likely erroneous or a good estimate; 3) the step size may not be optimal; 4) the algorithm could pass through a stagnation point and keep going rather than identifying where best to stop; and 5) the approach of using a random initial location may not be optimal.
 
 
 References:
