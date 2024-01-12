@@ -1,13 +1,13 @@
 README.txt
 
 Author: Andrew J. Wiebe
-Date: 10 Jan 2024
+Date: 12 Jan 2024
 
-ICOP24 Repository (ajwiebe77/ICOP24)
+ICOP24 Repository (https://github.com/ajwiebe77/ICOP24)
 
-Code for GNU Octave 6.4.0 (Eaton et al., 2020)
+Code for GNU Octave 6.4.0 (.m files; Eaton et al., 2020)
 (Note: This code (.m files) is likely nearly compatible with MATLAB; it may require minor updates. This has not been tested.)
-and code for R (R Core Team, 2022)
+and code for R (.R files; R Core Team, 2022)
 
 
 Introduction:
@@ -16,7 +16,7 @@ The code in this repository (ajwiebe77/ICOP24) contains calculations related to 
 
 The idea for this work is based on a paper by Nagheli et al. (2020), but the method was coded with alternative (dimensioned) equations in order to more easily include recharge into the superposition calculation. It might be possible to derive an analytical expression for the recharge for use with the Nagheli et al. (2020) equations, but this was not attempted.
 
-The regional gradient is first constructed (splinesurface*.m) from a water table elevation matrix constructed using cubic splines. A regional background water table gradient is assumed (at a radius of 1000 m from the origin) and a gradient of 0 m/m is assumed for flow lines perpendicular to and crossing the lake boundaries. The text file generated is then read by one of the two .m scripts (one for each case noted above). The script (whati21.m for 'permafrost' or whati20.m for 'no permafrost') calculates or reads a potential field (matrix of values) related to groundwater recharge, reads the regional water table matrix file and calculates the x- and y-direction gradients, then superimposes the potentials related to recharge, regional flow, and well pumping. Finally, a gradient ascent method is used to approximate the location of a stagnation point (only zero or one is assumed for this system).
+The regional gradient is first constructed (splinesurface*.m) from a water table elevation matrix constructed using cubic splines. A regional background water table gradient is assumed (at a radius of 1000 m from the origin) and a gradient of 0 m/m is assumed for flow lines perpendicular to and crossing the lake boundaries. The text file generated is then read by one of the two .m scripts (one for each case noted above). The script (whati_pf.m for 'permafrost' or whati_nopf.m for 'no permafrost') calculates or reads a potential field (matrix of values) related to groundwater recharge, reads the regional water table matrix file and calculates the x- and y-direction gradients, then superimposes the potentials related to recharge, regional flow, and well pumping. Finally, a gradient ascent method is used to approximate the location of a stagnation point (only zero or one is assumed for this system).
 
 The field site for the application of this method is the community of Whatì, NWT, Canada (117’16”19.9 °W, 63’8”38.3 °N). The well pumping rate and aquifer thickness were estimated based on Stanley Associates (1987). The distance to permafrost was loosely based on geotech studies by Thurber (1981) and Hardy (1991).
 
@@ -24,7 +24,7 @@ Highlights:
 
 Users may find the following aspects of this project useful:
 - The GNU Octave code applies the superposition method to several potential fields (related to groundwater recharge, regional unconfined water table gradient, wells) and generates the resulting complex potential field.
-- The R scripts whati9pf.R and whati9nopf.R contain code that saves contour lines data to .shp files (as points). The 'order' and 'group' fields allow the points to be processed in GIS software (e.g., 'Points to Path' operation in QGIS 3.16.9) to create polylines. Some editing of the resulting polylines may be necessary.
+- The R scripts whati9pf.R and whati9nopf.R contain code that saves contour lines data to .shp files (as points). The 'order' and 'group' fields allow the points to be processed in GIS software (e.g., 'Points to Path' operation in QGIS 3.16.9) to create polylines. Some editing may be necessary (e.g., to remove points along the branch cut that cuts through the streamline contour lines roughly toward the north).
 
 
 ICOP24 Coding Notes:
@@ -41,8 +41,39 @@ Known Limitations:
 
 - The background regional water table has some issues outside of a radius of 1000 m near the edge of the 1000 m by 1000 m area. This may be adjusted by ghosting in some points along the outer edges. This would also be helpful along the two boundary arms of the aquifer wedge for distances from the origin of > 500 m. A more realistic water table would slope down those lines and then reach an elevation of zero for the 0 to 500 m distance along each boundary line.
 - Future work could attempt to more reasonably follow the lake shoreline and alter the geometry away from a simple wedge. The Nagheli et al. (2020) approach for irregular polygon-shaped aquifers may be useful in association with this (recharge and regional gradient terms would need to be added to their analytical solutions). It might be possible to identify stagnation points and therefore capture zone boundaries if the wider flow field was considered. (Regional flow may branch with some flowing underneath the community and toward the well and some flowing directly into the lake on either side of the peninsula without entering the peninsula wedge).
-- The approach of using an image well fails to create a no-flow/impermeable permafrost boundary in Case (1). This is likely due to the presence of a regional flow field, because Mahdavi (2021), for instance, illustrates that an impermeable boundary can be created for a wedge aquifer using an image well in the absence of a regional gradient.
+- The approach of using an image well fails to create a no-flow/impermeable permafrost boundary in Case 1). This is likely due to the presence of a regional flow field, because Mahdavi (2021), for instance, illustrates that an impermeable boundary can be created for a wedge aquifer using an image well in the absence of a regional gradient.
 - The gradient ascent method (inspired by a gradient descent method; e.g., Khan Academy [2024]) is far from perfect and could be improved. Problems: 1) the method only identifies one point, which may be erroneous and located on or very close to a boundary or edge of the domain; 2) there is no feedback to suggest whether the point is likely erroneous or a good estimate; 3) the step size may not be optimal; 4) the algorithm could pass through a stagnation point and keep going rather than identifying where best to stop; and 5) the approach of using a random initial location may not be optimal.
+
+
+Files:
+
+Here are the lists of files for the two permafrost cases. Some files are employed in both cases.
+
+Case 1) Permafrost Files:
+----------------------------
+splinesurface3_dhdl00001.m - generate the background water table for either case
+whati_pf.m - superimpose potentials for recharge, regional water table, and production wells; save matrices representing real and imaginary parts of complex potential
+whati9pf.R (based on excerpts of code from app.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022) - read results and save GIS shape files (geometry: points)
+holzbecher_v10pf.R (modified from holzbecher_v10.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022) - line up the streamlines on either side of a branch cut
+mergecheck.R (unmodified from mergecheck.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022) - helper function for holzbecher_v10pf.R
+mergecheck2.R (unmodified from mergecheck2.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022) - helper function for holzbecher_v10pf.R
+long2UTM.R (O'Brien, 2012; unmodified from long2UTM.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022) - helper function for whati9pf.R
+trimAtBoundariesIMPERM2.R (modified from trimAtBoundaries.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022) - helper function for whati9pf.R
+
+Case 2) 'No Permafrost' Files:
+--------------------------------
+splinesurface3_dhdl00001.m - generate the background water table for either case
+whati_nopf.m - superimpose potentials for recharge, regional water table, and production wells; save matrices representing real and imaginary parts of complex potential
+whati9nopf.R (based on excerpts of code from app.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022)  - read results and save GIS shape files (geometry: points)
+holzbecher_v10nopf.R (modified from holzbecher_v10.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022) - line up the streamlines on either side of a branch cut
+mergecheck.R (unmodified from mergecheck.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022) - helper function for holzbecher_v10nopf.R
+mergecheck2.R (unmodified from mergecheck2.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022) - helper function for holzbecher_v10nopf.R
+long2UTM.R (O'Brien, 2012; unmodified from long2UTM.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022) - helper function for whati9nopf.R
+trimAtBoundariesIMPERM3.R (modified from trimAtBoundaries.R - https://github.com/ajwiebe77/theYWVC; Wiebe and McKenzie, 2022) - helper function for whati9nopf.R
+
+File to visualize regional flow system:
+----------------------------------------
+splinesurface3_dhdl00001plot.m
 
 
 References:
@@ -62,6 +93,8 @@ Khan Academy, 2024. Gradient descent. https://www.khanacademy.org/math/multivari
 Mahdavi, A. 2021. Response of dual-zone heterogeneous wedge-shaped aquifers under steady-state pumping and regional flow. Advan. Water Resour. 147, 103823, doi:10.1016/j.advwatres.2020.103823.
 
 Nagheli, S., Samani, N.,and Barry, D.A., 2020. Capture zone models of a multi-well system in aquifers bounded with regular and irregular inflow boundaries. J. Hydrol. X 7, 100053. doi:10.1016/j.hydroa.2020.100053.
+
+O'Brien, 2012. Response to "Determining UTM zone (to convert) from longitude/latitude." https://stackoverflow.com/questions/9186496/determining-utm-zone-to-convert-from-longitude-latitude. Cited 19 Dec 2022.
 
 R Core Team. 2022. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/. Cited 17 March 2022.
 
