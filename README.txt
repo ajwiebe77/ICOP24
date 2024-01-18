@@ -110,3 +110,10 @@ Van Loan, C.F. 2000. Introduction to Scientific Computing. 2nd Ed, Prentice-Hall
 
 Wiebe, A.J., and McKenzie, J.M. 2022. An Open-Source Web Tool for Visualizing Estimates of Well Capture Zones Near Surface Water Features. Poster presentation at: AGU Fall Meeting 2022, Chicago, IL, USA, 12-16 Dec 2022. doi:10.22541/essoar.167267811.10671930/v1.
 
+
+----------------------------
+Author/Contact Information
+
+This code was written by Andrew J. Wiebe:
+
+https://www.researchgate.net/profile/Andrew-Wiebe-3
