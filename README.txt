@@ -3,6 +3,8 @@ README.txt
 Author: Andrew J. Wiebe
 Date: 12 Jan 2024
 
+Licence: CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)
+
 ICOP24 Repository (https://github.com/ajwiebe77/ICOP24)
 
 Code for GNU Octave 6.4.0 (.m files; Eaton et al., 2020)
